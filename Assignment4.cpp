@@ -5,6 +5,7 @@
 
 #include "Movie.h"
 #include "LinkedList.h"
+#include "Customer.h"
 
 
 int main()
@@ -66,6 +67,9 @@ int main()
 	}
 
 	MovieList->printFromNode();
+
+	LinkedList<Customer>* CustomerList = new LinkedList<Customer>();
+	Customer dave;
 
 	system("PAUSE");
 	return 0;
