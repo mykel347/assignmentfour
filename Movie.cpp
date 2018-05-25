@@ -1,6 +1,8 @@
 #include "Movie.h"
 #include <iostream>
 
+using namespace std;
+
 //////////////////////////////////////////////////////////////////
 //Parent Movie Class
 //////////////////////////////////////////////////////////////////
@@ -47,11 +49,11 @@ MovieDrama::~MovieDrama()
 
 void MovieDrama::print()
 {
-	std::cout << "Title: \t" << getTitle() << std::endl;
-	std::cout << "Director: \t" << getDirector() << std::endl;
-	std::cout << "Genre: \t" << getMovieType() << std::endl;
-	std::cout << "Release Date: \t" << getYearReleased() << std::endl;
-	std::cout << "In Stock: \t" << getStock() << std::endl << std::endl;
+	std::cout<< "Title:\t\t" << getTitle() << std::endl;
+	std::cout<< "Director:\t" << getDirector() << std::endl;
+	std::cout<< "Genre:\t\t" << getMovieType() << std::endl;
+	std::cout<< "Release Date:\t"<< getYearReleased() << std::endl;
+	std::cout<< "In Stock:\t" << getStock() << std::endl << std::endl;
 }
 
 std::string MovieDrama::getMovieType() const { return movieType; }
@@ -84,11 +86,11 @@ MovieComedy::~MovieComedy()
 
 void MovieComedy::print()
 {
-	std::cout << "Title: \t" << getTitle() << std::endl;
-	std::cout << "Director: \t" << getDirector() << std::endl;
-	std::cout << "Genre: \t" << getMovieType() << std::endl;
-	std::cout << "Release Date: \t" << getYearReleased() << std::endl;
-	std::cout << "In Stock: \t" << getStock() << std::endl << std::endl;
+	std::cout << "Title:\t\t" << getTitle() << std::endl;
+	std::cout << "Director:\t" << getDirector() << std::endl;
+	std::cout << "Genre:\t\t" << getMovieType() << std::endl;
+	std::cout << "Release Date:\t" << getYearReleased() << std::endl;
+	std::cout << "In Stock:\t" << getStock() << std::endl << std::endl;
 }
 
 std::string MovieComedy::getMovieType() const { return movieType; }
@@ -135,12 +137,12 @@ void MovieClassic::setMonthReleased(int m) { monthReleased = m; }
 
 void MovieClassic::print() const
 {
-	std::cout << "Title: \t" << getTitle() << std::endl;
-	std::cout << "Director: \t" << getDirector() << std::endl;
-	std::cout << "Genre: \t" << getMovieType() << std::endl;
-	std::cout << "Release Date: \t" << getMonthReleased() << " " << getYearReleased() << std::endl;
-	std::cout << "In Stock: \t" << getStock() << std::endl;
-	std::cout << "Main Actor: \t" << getMajorActorFirst() << " " << getMajorActorLast() << std::endl << std::endl;
+	std::cout << "Title:\t\t" << getTitle() << std::endl;
+	std::cout <<  "Director:\t" << getDirector() << std::endl;
+	std::cout <<  "Genre:\t\t" << getMovieType() << std::endl;
+	std::cout  << "Release Date:\t" << getMonthReleased() << " " << getYearReleased() << std::endl;
+	std::cout <<  "In Stock:\t" << getStock() << std::endl;
+	std::cout <<  "Main Actor:\t" << getMajorActorFirst() << " " << getMajorActorLast() << std::endl << std::endl;
 }
 
 std::string MovieClassic::getMovieType() const { return movieType; }
