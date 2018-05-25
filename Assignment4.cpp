@@ -65,7 +65,7 @@ int main()
 		std::cout << "Item 4 Added" << std::endl;
 	}
 
-	MovieList->print();
+	MovieList->printFromNode();
 
 	system("PAUSE");
 	return 0;

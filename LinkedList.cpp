@@ -49,7 +49,7 @@ bool LinkedList<T>::add(T * objectSent)
 }
 
 template<typename T>
-void LinkedList<T>::print() const {
+void LinkedList<T>::printFromNode() const {
 	Node* tempPtr = root;
 	while (tempPtr->next != nullptr) {
 		tempPtr->data->print();

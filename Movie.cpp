@@ -67,6 +67,7 @@ bool MovieDrama::lessThan(MovieDrama * Rhs) const
 		return true;
 	else if (getTitle() > Rhs->getTitle())
 		return false;
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -105,6 +106,7 @@ bool MovieComedy::lessThan(MovieComedy * Rhs) const
 	}
 	else if (getYearReleased() > Rhs->getYearReleased())
 		return false;
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -164,4 +166,5 @@ bool MovieClassic::lessThan(const MovieClassic * Rhs) const
 		return true;
 	else if (getMajorActorLast() > Rhs->getMajorActorLast())
 		return false;
+	return true;
 }
