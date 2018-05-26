@@ -24,6 +24,7 @@ void readMovieFile(std::string filename) {
 	{
 		
 	}
+	inFile.close();
 }
 
 void readCustomerFile(std::string filename) {
@@ -36,6 +37,7 @@ void readCustomerFile(std::string filename) {
 	{
 
 	}
+	inFile.close();
 }
 
 void readFromFile() {
