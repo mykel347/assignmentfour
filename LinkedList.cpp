@@ -10,6 +10,7 @@ LinkedList<T>::LinkedList()
 template <typename T>
 LinkedList<T>::~LinkedList()
 {
+	clear();
 }
 
 template<typename T>
@@ -63,5 +64,11 @@ bool LinkedList<T>::isEmpty() const {
 	if (root == nullptr)
 		return true;
 	return false;
+}
+
+template<typename T>
+void LinkedList<T>::clear()
+{
+	clearHelper(root);
 }
 

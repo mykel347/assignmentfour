@@ -7,11 +7,25 @@
 #include "LinkedList.h"
 #include "Customer.h"
 #include "HashTable.h"
+#include <fstream>
 
+void readFromFile() {
+	std::ifstream inFile;
+	inFile.open("data4customers.txt");
+
+	if (!inFile) {
+		std::cerr << "Unable to open file data4customers";
+		std::cout << "Unable to open the file data4customers";
+	}
+}
+
+void writeToFile() {
+
+}
 
 int main()
 {
-	Movie* movie1Generic = new Movie();
+	/*Movie* movie1Generic = new Movie();
 	MovieComedy* movie2Comedy = new MovieComedy();
 	MovieDrama* movie3Drama = new MovieDrama();
 
@@ -70,7 +84,15 @@ int main()
 	MovieList->printFromNode();
 
 	LinkedList<Customer>* CustomerList = new LinkedList<Customer>();
-	Customer dave;
+	Customer dave;*/
+
+	readFromFile();
+
+	//switch menu
+	//possible options?
+
+	writeToFile();
+
 
 	system("PAUSE");
 	return 0;

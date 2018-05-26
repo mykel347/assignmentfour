@@ -4,7 +4,7 @@
 template <typename K, typename V, typename F = KeyHash<K>>
 HashTable<K, V, F>::HashTable()
 {
-	table = new HashNode<K, V> *[TABLE_SIZE]()
+	table = new HashNode<K, V>* [TABLE_SIZE]()
 }
 
 template <typename K, typename V, typename F = KeyHash<K>>
