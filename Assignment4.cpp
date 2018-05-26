@@ -9,14 +9,39 @@
 #include "HashTable.h"
 #include <fstream>
 
-void readFromFile() {
-	std::ifstream inFile;
-	inFile.open("data4customers.txt");
+HashTable<std::string, Customer>* customerHashTable = new HashTable<std::string, Customer>;
+HashTable<std::string, Movie>* movieHashTable = new HashTable<std::string, Movie>;
+LinkedList<Movie>* movieLinkedList = new LinkedList<Movie>;
+LinkedList<Customer>* customerLinkedList = new LinkedList<Customer>;
 
+void readMovieFile(std::string filename) {
+	std::ifstream inFile;
+	inFile.open(filename);
 	if (!inFile) {
-		std::cerr << "Unable to open file data4customers";
-		std::cout << "Unable to open the file data4customers";
+		std::cerr << "Unable to open file data4movies";
 	}
+	else
+	{
+		
+	}
+}
+
+void readCustomerFile(std::string filename) {
+	std::ifstream inFile;
+	inFile.open(filename);
+	if (!inFile) {
+		std::cerr << "unable to open file data4customers";
+	}
+	else
+	{
+
+	}
+}
+
+void readFromFile() {
+
+	readMovieFile("data4movies.txt");
+	readCustomerFile("data4customers.txt");
 }
 
 void writeToFile() {
@@ -87,6 +112,7 @@ int main()
 	Customer dave;*/
 
 	readFromFile();
+	
 
 	//switch menu
 	//possible options?

@@ -20,7 +20,7 @@ HashTable<K, V, F>::~HashTable()
 		}
 		table[i] = NULL;
 	}
-	//Delets the table
+	//Deletes the table
 	delete[table];
 }
 
