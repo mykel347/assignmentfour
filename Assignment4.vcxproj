@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClCompile Include="Assignment4.cpp" />
     <ClCompile Include="Customer.cpp" />
+    <ClCompile Include="HashTable.cpp" />
     <ClCompile Include="LinkedList.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -125,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Customer.h" />
+    <ClInclude Include="HashTable.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Movie.h" />
     <ClInclude Include="TransactionHistory.h" />

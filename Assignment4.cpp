@@ -6,6 +6,7 @@
 #include "Movie.h"
 #include "LinkedList.h"
 #include "Customer.h"
+#include "HashTable.h"
 
 
 int main()
