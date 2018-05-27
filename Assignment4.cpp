@@ -2,27 +2,84 @@
 //
 
 #include <iostream>
-
+#include <queue>
 #include "Movie.h"
 #include "LinkedList.h"
 #include "Customer.h"
 #include "HashTable.h"
+#include <sstream>
 #include <fstream>
+#include <vector>
+//#include <cstddef>
 
-HashTable<std::string, Customer>* customerHashTable = new HashTable<std::string, Customer>;
-HashTable<std::string, Movie>* movieHashTable = new HashTable<std::string, Movie>;
-LinkedList<Movie>* movieLinkedList = new LinkedList<Movie>;
-LinkedList<Customer>* customerLinkedList = new LinkedList<Customer>;
+int countWords(std::string s) {
+	int wordCount = 0;
+	std::stringstream ss(s);
+	std::string word;
+	while (ss >> word) ++wordCount;
+	return wordCount;
+}
+
+void processMovies(int type, std::string line)
+{
+	MovieComedy movie;
+	std::istringstream iss(line);
+	int wordCount = countWords(line);;
+	std::vector<std::string> wordVector;
+	switch (type)
+	{
+		//Comedy
+	case 1:
+		do {
+			std::string subs;
+			iss >> subs;
+			wordVector.push_back(subs);		
+		} while (iss);
+		std::cout << wordCount << std::endl;
+		for (int i = 0; i < wordVector.size(); i++) {
+			std::cout << wordVector[i] << std::endl;
+		}
+
+
+
+		break;
+		//Drama
+	case 2:
+		break;
+		//Classic
+	case 3:
+		break;
+	}
+}
 
 void readMovieFile(std::string filename) {
-	std::ifstream inFile;
-	inFile.open(filename);
+	std::ifstream inFile(filename);
+	std::string line;
+	std::string peek;
+	int type;
+
 	if (!inFile) {
 		std::cerr << "Unable to open file data4movies";
 	}
 	else
 	{
-		
+		while(std::getline(inFile, line))
+			if (!line.empty()) {
+				peek = line.at(0);
+
+				if (peek == "F")
+					type = 1;
+				else if (peek == "D")
+					type = 2;
+				else if (peek == "C")
+					type = 3;
+				else
+				{
+					std::cerr << "Error processing Movie - Invalid genre" << std::endl;
+					continue;
+				}
+				processMovies(type, line);
+			}		
 	}
 	inFile.close();
 }
@@ -49,6 +106,8 @@ void readFromFile() {
 void writeToFile() {
 
 }
+
+
 
 int main()
 {
@@ -112,6 +171,11 @@ int main()
 
 	LinkedList<Customer>* CustomerList = new LinkedList<Customer>();
 	Customer dave;*/
+
+	HashTable<std::string, Customer*>* customerHashTable = new HashTable<std::string, Customer*>(100);
+	HashTable<std::string, Movie*>* movieHashTable = new HashTable<std::string, Movie*>(100);
+	LinkedList<Movie> movieLinkedList;
+	LinkedList<Customer> customerLinkedList;
 
 	readFromFile();
 	

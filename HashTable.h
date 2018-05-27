@@ -1,12 +1,16 @@
 #pragma once
+//#include <cstddef>
+#include <string>
 
-const int TABLE_SIZE = 100;
+// typename V = objectPtr address searching/storing on the hashtable
+// typename K = This is the string we're sending to become hashed
 template <typename K, typename V>
-class HashNode {
+class HashNode
+{
 public:
-	HashNode(const K &key, const V &value) : 
-	key(key), value(value), next(NULL) {}
-	
+	HashNode(const K &key, const V &value) :
+		key(key), value(value), next(NULL) {}
+
 	K getKey() const { return key; }
 	V getValue() const { return value; }
 	void setValue(V value) { HashNode::value = value; }
@@ -14,33 +18,30 @@ public:
 	void setNext(HashNode* next) { HashNode::next = next; }
 
 private:
-	K key;
-	V value;
-	HashNode* next;
+	K key = NULL;
+	V value = NULL;
+	HashNode* next = NULL;
 };
 
-template <typename K>
-struct KeyHash {
-	unsigned long operator()(const K& key) const
-	{
-		return reinterpret_cast<unsigned long>(key) % TABLE_SIZE;
-	}
-};
-
-template <typename K, typename V, typename F = KeyHash<K>>
+template <typename K, typename V>
 class HashTable
 {
 public:
-	HashTable();
+	HashTable(int size);
 	~HashTable();
 
-	bool get(const K& key, V& value);        
-	void put(const K& key, const V& value);
-	void remove(const K& key);
+	bool get(const K& stringKey, V& objectPtr);        
+	void put(const K& stringKey, const V& objectPtr);
+	void remove(const K& stringKey);
+	unsigned long hash(const K& stringkey);
 
 private:
+	//Hashtable
+	
+	int tableSize;
 	HashNode<K, V>** table;
-	F hashFunc;
 };
 
+
+#include "HashTable.cpp"
 

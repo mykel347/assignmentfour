@@ -1,18 +1,24 @@
 #include "HashTable.h"
+#include <iostream>
 
 
-template <typename K, typename V, typename F = KeyHash<K>>
-HashTable<K, V, F>::HashTable()
+template <typename K, typename V>
+HashTable<K, V>::HashTable(int size)
 {
-	table = new HashNode<K, V>* [TABLE_SIZE]()
+	tableSize = size;
+	table = new HashNode<K, V>*[tableSize];
+	for (int i = 0; i < tableSize; i++) {
+		table[i] = NULL;
+	}
 }
 
-template <typename K, typename V, typename F = KeyHash<K>>
-HashTable<K, V, F>::~HashTable()
+template <typename K, typename V>
+HashTable<K, V>::~HashTable()
 {
 	//cycles through each hash "bucket" deleting each Node
-	for (int i = 0; i < TABLE_SIZE; ++i) {
+	for (int i = 0; i < tableSize; ++i) {
 		HashNode<K, V>* entry = table[i];
+
 		while (entry != NULL) {
 			HashNode<K, V>* prev = entry;
 			entry = entry->getNext();
@@ -20,15 +26,13 @@ HashTable<K, V, F>::~HashTable()
 		}
 		table[i] = NULL;
 	}
-	//Deletes the table
-	delete[table];
 }
 
-template<typename K, typename V, typename F>
-bool HashTable<K, V, F>::get(const K & key, V & value)
+template <typename K, typename V>
+bool HashTable<K, V>::get(const K & key, V & value)
 {
 	//retrieves the hashValue
-	unsigned long hashValue = hashFunc(key);
+	unsigned long hashValue = hash(key);
 	HashNode<K, V>* entry = table[hashValue];
 
 	//Cycles through all nodes with same hashkey
@@ -42,13 +46,20 @@ bool HashTable<K, V, F>::get(const K & key, V & value)
 	return false;
 }
 
-template<typename K, typename V, typename F>
-void HashTable<K, V, F>::put(const K & key, const V & value)
+template <typename K, typename V>
+void HashTable<K, V>::put(const K & key, const V & value)
 {
 	//retrives the hashValue(slot in the matrix)
-	unsigned long hashValue = hashFunc(key);
+	unsigned long hashValue = hash(key);
+	std::cout << "Hash: " << hashValue << std::endl;
 	HashNode<K, V>* prev = NULL;
 	HashNode<K, V>* entry = table[hashValue];
+
+	/*if (entry == NULL)
+	{
+		entry = new HashNode<K, V>(key, value);
+		table[hashValue] = entry;
+	}*/
 
 	//cycles through other nodes with same hashValue (if needed)
 	while (entry != NULL && entry->getKey() != key) {
@@ -74,11 +85,32 @@ void HashTable<K, V, F>::put(const K & key, const V & value)
 	}
 }
 
-template<typename K, typename V, typename F>
-void HashTable<K, V, F>::remove(const K & key)
+//template<typename K, typename V>
+//int HashTable<K, V>::hash(const K& stringKey)
+//{
+//	int hash = 0;
+//	for (int i = 0; i < key.length(), i++) {
+//		hash = hash + (int)key[i];
+//		std::cout << "key[" << i << "] = " << (int)key[i] << std::endl;
+//	}
+//	
+//
+//	hash = hash % tableSize;
+//	std::cout << "Hash = " << hash << std::endl;
+//	return hash;
+//}
+
+template<typename K, typename V>
+unsigned long HashTable<K, V>::hash(const K& stringKey)
+{
+	return reinterpret_cast<unsigned long>(stringKey) % tableSize;
+}
+
+template <typename K, typename V>
+void HashTable<K, V>::remove(const K & key)
 {
 	//retrieve the hash value(slot in the matrix)
-	unsigned long hashValue = hashFunc(key);
+	unsigned long hashValue = hash(key);
 	HashNode<K, V>* prev = NULL;
 	HashNode<K, V>* entry = table[hashValue];
 
