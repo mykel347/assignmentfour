@@ -12,6 +12,13 @@
 #include <vector>
 //#include <cstddef>
 
+//HashTable<std::string, Customer*>* customerHashTable = new HashTable<std::string, Customer*>(100);
+//HashTable<std::string, Movie*>* movieHashTable = new HashTable<std::string, Movie*>(100);
+HashTable<std::string, Customer*> customerHashTable(100);
+HashTable<std::string, Movie*> movieHashTable(100);
+LinkedList<Movie> movieLinkedList;
+LinkedList<Customer> customerLinkedList;
+
 int countWords(std::string s) {
 	int wordCount = 0;
 	std::stringstream ss(s);
@@ -22,26 +29,51 @@ int countWords(std::string s) {
 
 void processMovies(int type, std::string line)
 {
-	MovieComedy movie;
+	MovieComedy* movie = new MovieComedy();
 	std::istringstream iss(line);
 	int wordCount = countWords(line);;
 	std::vector<std::string> wordVector;
+	std::string director;
+	std::string title;
+	std::string key;
+
+	//this method iterates each word within the string from "iss" to a temp string "subs"
+	do {
+		std::string subs;
+		iss >> subs;
+		//removes unnessessary commas from the word
+		subs.erase(std::remove(subs.begin(), subs.end(), ','), subs.end());
+		//pushes the words into a temp vector, for later use.
+		wordVector.push_back(subs);
+	} while (iss);
+
 	switch (type)
 	{
-		//Comedy
+		//Comedy movie format
 	case 1:
-		do {
-			std::string subs;
-			iss >> subs;
-			wordVector.push_back(subs);		
-		} while (iss);
-		std::cout << wordCount << std::endl;
-		for (int i = 0; i < wordVector.size(); i++) {
-			std::cout << wordVector[i] << std::endl;
+		//set stock - slot 1
+		movie->setStock(stoi(wordVector[1]));
+		//set director - slot 2 and 3
+		director = wordVector[2] + " " + wordVector[3];
+		movie->setDirector(director);
+		//Title slots - from slot 4 to 1 before final slot
+		title = wordVector[4];
+		for (int i = 5; i < wordCount - 1; i++) {
+			title += " " + wordVector[i];
 		}
+		movie->setTitle(title);
+		//year released - last slot - wordCount-1 
+		movie->setYearReleased(stoi(wordVector[wordCount-1]));
+		//Set key to be used for hashTable
+		key = movie->getTitle();
+		key += key + " " + std::to_string(movie->getYearReleased());
 
-
-
+		//Add this new movie into both linked list, and hash table
+		movieLinkedList.add(movie);
+		movieHashTable.put(key, movie);
+		
+		//
+		movie->print();
 		break;
 		//Drama
 	case 2:
@@ -172,10 +204,10 @@ int main()
 	LinkedList<Customer>* CustomerList = new LinkedList<Customer>();
 	Customer dave;*/
 
-	HashTable<std::string, Customer*>* customerHashTable = new HashTable<std::string, Customer*>(100);
+	/*HashTable<std::string, Customer*>* customerHashTable = new HashTable<std::string, Customer*>(100);
 	HashTable<std::string, Movie*>* movieHashTable = new HashTable<std::string, Movie*>(100);
 	LinkedList<Movie> movieLinkedList;
-	LinkedList<Customer> customerLinkedList;
+	LinkedList<Customer> customerLinkedList;*/
 
 	readFromFile();
 	

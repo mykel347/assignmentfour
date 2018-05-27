@@ -33,7 +33,7 @@ public:
 	bool get(const K& stringKey, V& objectPtr);        
 	void put(const K& stringKey, const V& objectPtr);
 	void remove(const K& stringKey);
-	unsigned long hash(const K& stringkey);
+	int hash(const K& key);
 
 private:
 	//Hashtable

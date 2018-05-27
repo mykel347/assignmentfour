@@ -21,6 +21,7 @@ public:
 	void setYearReleased(int year);
 	int getYearReleased() const;
 
+	virtual bool lessThan(Movie* Rhs) const;
 	virtual void print();
 
 private:
@@ -46,13 +47,17 @@ public:
 	void print() const;
 	std::string getMovieType() const;
 	bool lessThan(const MovieClassic* Rhs) const;
+	void setKey(std::string k) { key = k; }
+	std::string getKey() { return key; }
+
 
 private:
 	std::string majorActorFirst;
 	std::string majorActorLast;
 	std::string movieType = "Classic";
+	std::string key;
 	int monthReleased = 0;
-
+	
 };
 
 //Child Comedy Class

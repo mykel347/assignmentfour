@@ -51,15 +51,8 @@ void HashTable<K, V>::put(const K & key, const V & value)
 {
 	//retrives the hashValue(slot in the matrix)
 	unsigned long hashValue = hash(key);
-	std::cout << "Hash: " << hashValue << std::endl;
 	HashNode<K, V>* prev = NULL;
 	HashNode<K, V>* entry = table[hashValue];
-
-	/*if (entry == NULL)
-	{
-		entry = new HashNode<K, V>(key, value);
-		table[hashValue] = entry;
-	}*/
 
 	//cycles through other nodes with same hashValue (if needed)
 	while (entry != NULL && entry->getKey() != key) {
@@ -85,25 +78,15 @@ void HashTable<K, V>::put(const K & key, const V & value)
 	}
 }
 
-//template<typename K, typename V>
-//int HashTable<K, V>::hash(const K& stringKey)
-//{
-//	int hash = 0;
-//	for (int i = 0; i < key.length(), i++) {
-//		hash = hash + (int)key[i];
-//		std::cout << "key[" << i << "] = " << (int)key[i] << std::endl;
-//	}
-//	
-//
-//	hash = hash % tableSize;
-//	std::cout << "Hash = " << hash << std::endl;
-//	return hash;
-//}
-
 template<typename K, typename V>
-unsigned long HashTable<K, V>::hash(const K& stringKey)
+int HashTable<K, V>::hash(const K& key)
 {
-	return reinterpret_cast<unsigned long>(stringKey) % tableSize;
+	int hash = 0;
+	for (int i = 0; i < key.length(); i++) {
+		hash = hash + (int)key[i];
+	}
+	hash = hash % tableSize;
+	return hash;
 }
 
 template <typename K, typename V>

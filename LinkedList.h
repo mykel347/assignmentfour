@@ -6,9 +6,9 @@ class LinkedList
 private:
 	struct Node {
 		T* data;
-		Node* next;
+		Node* next = nullptr;
 	};
-	Node* root;
+	Node* root = nullptr;
 
 public:
 	LinkedList();
@@ -22,10 +22,10 @@ public:
 
 	//Defined the function here since the Node struct is unknown to the CPP file until compile
 	Node* clearHelper(Node* r){
-		if (r == NULL)
+		if (r == nullptr)
 			return nullptr;
 
-		while (r->next != NULL)
+		if (r->next != nullptr)
 			clearHelper(r->next);
 		delete r;
 		return nullptr;

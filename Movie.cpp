@@ -31,6 +31,12 @@ void Movie::setYearReleased(int year) { yearReleased = year; }
 
 int Movie::getYearReleased() const { return yearReleased; }
 
+bool Movie::lessThan(Movie* Rhs) const
+{
+	std::cout << "Wrong LessThan method called" << std::endl;
+	return false;
+}
+
 void Movie::print()
 {
 }
