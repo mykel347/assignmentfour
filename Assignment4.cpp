@@ -12,11 +12,12 @@
 #include <vector>
 //#include <cstddef>
 
-//HashTable<std::string, Customer*>* customerHashTable = new HashTable<std::string, Customer*>(100);
-//HashTable<std::string, Movie*>* movieHashTable = new HashTable<std::string, Movie*>(100);
+
 HashTable<std::string, Customer*> customerHashTable(100);
 HashTable<std::string, Movie*> movieHashTable(100);
-LinkedList<Movie> movieLinkedList;
+LinkedList<MovieComedy> movieComedyLinkedList;
+LinkedList<MovieDrama> movieDramaLinkedList;
+LinkedList<MovieClassic> movieClassicLinkedList;
 LinkedList<Customer> customerLinkedList;
 
 int countWords(std::string s) {
@@ -29,20 +30,22 @@ int countWords(std::string s) {
 
 void processMovies(int type, std::string line)
 {
-	MovieComedy* movie = new MovieComedy();
+	MovieComedy* movieComedy;
+	MovieDrama* movieDrama;
+	MovieClassic* movieClassic;
 	std::istringstream iss(line);
 	int wordCount = countWords(line);;
 	std::vector<std::string> wordVector;
-	std::string director;
-	std::string title;
-	std::string key;
+	std::string director = "";
+	std::string title = "";
+	std::string key = "";
 
 	//this method iterates each word within the string from "iss" to a temp string "subs"
 	do {
 		std::string subs;
 		iss >> subs;
 		//removes unnessessary commas from the word
-		subs.erase(std::remove(subs.begin(), subs.end(), ','), subs.end());
+		//subs.erase(std::remove(subs.begin(), subs.end(), ','), subs.end()); //disabled due to nature of command file format
 		//pushes the words into a temp vector, for later use.
 		wordVector.push_back(subs);
 	} while (iss);
@@ -51,35 +54,120 @@ void processMovies(int type, std::string line)
 	{
 		//Comedy movie format
 	case 1:
+		movieComedy = new MovieComedy();
 		//set stock - slot 1
-		movie->setStock(stoi(wordVector[1]));
+		movieComedy->setStock(stoi(wordVector[1]));
 		//set director - slot 2 and 3
 		director = wordVector[2] + " " + wordVector[3];
-		movie->setDirector(director);
+		movieComedy->setDirector(director);
 		//Title slots - from slot 4 to 1 before final slot
 		title = wordVector[4];
 		for (int i = 5; i < wordCount - 1; i++) {
 			title += " " + wordVector[i];
 		}
-		movie->setTitle(title);
+		movieComedy->setTitle(title);
 		//year released - last slot - wordCount-1 
-		movie->setYearReleased(stoi(wordVector[wordCount-1]));
+		movieComedy->setYearReleased(stoi(wordVector[wordCount-1]));
 		//Set key to be used for hashTable
-		key = movie->getTitle();
-		key += key + " " + std::to_string(movie->getYearReleased());
+		key = movieComedy->getTitle();
+		key += key + " " + std::to_string(movieComedy->getYearReleased());
 
-		//Add this new movie into both linked list, and hash table
-		movieLinkedList.add(movie);
-		movieHashTable.put(key, movie);
-		
-		//
-		movie->print();
+		//Checks if Movie already exists through the hash table "put" function
+		//If movie already exists, does not place a duplicate into the linked list
+		if (movieComedyLinkedList.add(movieComedy)) {
+			movieHashTable.put(key, movieComedy);
+			//Reporting tool
+			//std::cout << "Successfully added Movie" << std::endl;
+		}
+		else
+			std::cout << "Movie object already exist in database. Replacing with new object" << std::endl;
 		break;
+
 		//Drama
 	case 2:
+		movieDrama = new MovieDrama();
+
+		//set stock - slot 1
+		movieDrama->setStock(stoi(wordVector[1]));
+
+		//set director - slot 2 and 3
+		director = wordVector[2] + " " + wordVector[3];
+		movieDrama->setDirector(director);
+
+		//Set Title - from slot 4 to 1 before final slot
+		title = wordVector[4];
+		for (int i = 5; i < wordCount - 1; i++) {
+			title += " " + wordVector[i];
+		}
+		movieDrama->setTitle(title);
+
+		//Set yearReleased - last slot - wordCount-1 
+		movieDrama->setYearReleased(stoi(wordVector[wordCount - 1]));
+
+		//Set key to be used for hashTable
+		key = movieDrama->getDirector();
+		key += key + " " + movieDrama->getTitle();
+
+		//Checks if Movie already exists through the hash table "put" function
+		//If movie already exists, does not place a duplicate into the linked list
+		if (movieDramaLinkedList.add(movieDrama)) {
+			movieHashTable.put(key, movieDrama);
+			//Reporting tool
+			//std::cout << "Successfully added Movie" << std::endl;
+		}
+		else
+			std::cout << "Movie object already exist in database. Replacing with new object" << std::endl;
 		break;
+
 		//Classic
 	case 3:
+		movieClassic = new MovieClassic();
+
+		//set stock - slot 1
+		movieClassic->setStock(stoi(wordVector[1]));
+
+		//set director - slot 2 and 3
+		director = wordVector[2] + " " + wordVector[3];
+		movieClassic->setDirector(director);
+
+		//Set Title - from slot 4 to 1 before final slot
+		title = wordVector[4];
+		for (int i = 5; i < wordCount - 4; i++) {
+			title += " " + wordVector[i];
+		}
+		movieClassic->setTitle(title);
+
+		//Set Actor first name
+		movieClassic->setMajorActorFirst(wordVector[wordCount - 4]);
+
+		//Set actor last name
+		movieClassic->setMajorActorLast(wordVector[wordCount - 3]);
+
+		//Set month released 
+		movieClassic->setMonthReleased(stoi(wordVector[wordCount - 2]));
+
+		//Set yearReleased - last slot - wordCount-1 
+		movieClassic->setYearReleased(stoi(wordVector[wordCount - 1]));
+
+		//Set key to be used for hashTable
+		key = wordVector[wordCount - 2] + " ";
+		key += wordVector[wordCount - 1] + " ";
+		key += wordVector[wordCount - 4] + " ";
+		key += wordVector[wordCount - 3];
+		
+
+		//Checks if Movie already exists through the hash table "put" function
+		//If movie already exists, does not place a duplicate into the linked list
+		if (movieHashTable.put(key, movieClassic))
+		{
+			movieClassicLinkedList.add(movieClassic);
+			//Reporting tool
+			//std::cout << "Successfully added Movie" << std::endl;
+		}
+		else
+			std::cout << "Movie object already exist in database. Replacing with new object" << std::endl;
+
+
 		break;
 	}
 }
@@ -118,13 +206,46 @@ void readMovieFile(std::string filename) {
 
 void readCustomerFile(std::string filename) {
 	std::ifstream inFile;
+	std::string line;
+	int count = 0;
+	std::string first;
+	std::string last;
+	std::string key;
+
 	inFile.open(filename);
 	if (!inFile) {
 		std::cerr << "unable to open file data4customers";
 	}
 	else
 	{
-
+		while (std::getline(inFile, line))
+		{
+			Customer* cust = new Customer();
+			std::istringstream iss(line);
+			do {
+				std::string subs;
+				iss >> subs;
+				if (count == 0) {
+				key = subs;
+				cust->setID(stoi(subs));
+				}
+				if (count == 1)
+					cust->setFirstName(subs);
+				if (count == 2)
+					cust->setLastName(subs);
+				count++;			
+			} while (iss);
+			//Adds in the new customer object
+			if (customerHashTable.put(key, cust))
+			{
+				customerLinkedList.add(cust);
+				//Reporting tool
+				//std::cout << "Successfully added Customer" << std::endl;
+			}
+			else
+				std::cout << "Customer object already exists in database. Replacing with new Object" << std::endl;
+			count = 0;
+		}
 	}
 	inFile.close();
 }

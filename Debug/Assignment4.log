@@ -1,18 +1,16 @@
 ﻿  Assignment4.cpp
-c:\users\jacob\documents\github\assignmentfour\hashtable.cpp(85): warning C4018: '<': signed/unsigned mismatch
-  c:\users\jacob\documents\github\assignmentfour\hashtable.cpp(83): note: while compiling class template member function 'int HashTable<std::string,Movie *>::hash(const K &)'
+c:\users\jacob\documents\github\assignmentfour\hashtable.cpp(88): warning C4018: '<': signed/unsigned mismatch
+  c:\users\jacob\documents\github\assignmentfour\hashtable.cpp(86): note: while compiling class template member function 'int HashTable<std::string,Customer *>::hash(const K &)'
           with
           [
               K=std::string
           ]
-  c:\users\jacob\documents\github\assignmentfour\hashtable.cpp(53): note: see reference to function template instantiation 'int HashTable<std::string,Movie *>::hash(const K &)' being compiled
+  c:\users\jacob\documents\github\assignmentfour\hashtable.cpp(53): note: see reference to function template instantiation 'int HashTable<std::string,Customer *>::hash(const K &)' being compiled
           with
           [
               K=std::string
           ]
-  c:\users\jacob\documents\github\assignmentfour\hashtable.cpp(7): note: while compiling class template member function 'HashTable<std::string,Movie *>::HashTable(int)'
-  c:\users\jacob\documents\github\assignmentfour\assignment4.cpp(18): note: see reference to function template instantiation 'HashTable<std::string,Movie *>::HashTable(int)' being compiled
-  c:\users\jacob\documents\github\assignmentfour\assignment4.cpp(18): note: see reference to class template instantiation 'HashTable<std::string,Movie *>' being compiled
-  Customer.cpp
-  Generating Code...
+  c:\users\jacob\documents\github\assignmentfour\hashtable.cpp(7): note: while compiling class template member function 'HashTable<std::string,Customer *>::HashTable(int)'
+  c:\users\jacob\documents\github\assignmentfour\assignment4.cpp(16): note: see reference to function template instantiation 'HashTable<std::string,Customer *>::HashTable(int)' being compiled
+  c:\users\jacob\documents\github\assignmentfour\assignment4.cpp(16): note: see reference to class template instantiation 'HashTable<std::string,Customer *>' being compiled
   Assignment4.vcxproj -> C:\Users\Jacob\Documents\GitHub\assignmentfour\Debug\Assignment4.exe

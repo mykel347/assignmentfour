@@ -47,7 +47,7 @@ bool HashTable<K, V>::get(const K & key, V & value)
 }
 
 template <typename K, typename V>
-void HashTable<K, V>::put(const K & key, const V & value)
+bool HashTable<K, V>::put(const K & key, const V & value)
 {
 	//retrives the hashValue(slot in the matrix)
 	unsigned long hashValue = hash(key);
@@ -75,7 +75,10 @@ void HashTable<K, V>::put(const K & key, const V & value)
 	else {
 		//found the existing node, updating value
 		entry->setValue(value);
+		//Reporting tool
+		return false;
 	}
+	return true;
 }
 
 template<typename K, typename V>

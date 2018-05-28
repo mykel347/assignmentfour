@@ -31,7 +31,7 @@ public:
 	~HashTable();
 
 	bool get(const K& stringKey, V& objectPtr);        
-	void put(const K& stringKey, const V& objectPtr);
+	bool put(const K& stringKey, const V& objectPtr);
 	void remove(const K& stringKey);
 	int hash(const K& key);
 

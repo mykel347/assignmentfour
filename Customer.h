@@ -16,6 +16,8 @@ public:
 	void setID(int newID);
 	int getID() const;
 	bool lessThan(Customer* c);
+	void setKey(std::string k) { key = k; }
+	std::string getKey() { return key; }
 
 	bool addToHistory(std::string type, Movie* movie);
 	void printHistory();
@@ -24,6 +26,7 @@ private:
 	int ID;
 	std::string firstName;
 	std::string lastName;
+	std::string key;
 	LinkedList<TransactionHistory> historyLinkedList;
 };
 
