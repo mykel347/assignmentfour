@@ -31,7 +31,7 @@ public:
 		return nullptr;
 	}
 
-	//No remove and no clear functions implemented. 
+	//No remove implemented. 
 };
 
 #include "LinkedList.cpp"

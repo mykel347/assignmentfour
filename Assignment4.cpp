@@ -256,6 +256,7 @@ void readFromFile() {
 	readCustomerFile("data4customers.txt");
 }
 
+//Not in requirement and can be skipped
 void writeToFile() {
 
 }
