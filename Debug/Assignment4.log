@@ -1,10 +1,10 @@
 ﻿  Assignment4.cpp
-c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(300): warning C4018: '<': signed/unsigned mismatch
-c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(345): warning C4018: '<': signed/unsigned mismatch
-c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(382): warning C4018: '<': signed/unsigned mismatch
-c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(417): warning C4018: '<': signed/unsigned mismatch
-c:\users\lisa\documents\github\assignmentfour\hashtable.cpp(88): warning C4018: '<': signed/unsigned mismatch
-  c:\users\lisa\documents\github\assignmentfour\hashtable.cpp(86): note: while compiling class template member function 'int HashTable<std::string,Customer *>::hash(const K &)'
+c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(296): warning C4018: '<': signed/unsigned mismatch
+c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(349): warning C4018: '<': signed/unsigned mismatch
+c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(389): warning C4018: '<': signed/unsigned mismatch
+c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(431): warning C4018: '<': signed/unsigned mismatch
+c:\users\lisa\documents\github\assignmentfour\hashtable.cpp(90): warning C4018: '<': signed/unsigned mismatch
+  c:\users\lisa\documents\github\assignmentfour\hashtable.cpp(88): note: while compiling class template member function 'int HashTable<std::string,Customer *>::hash(const K &)'
           with
           [
               K=std::string

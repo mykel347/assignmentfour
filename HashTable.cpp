@@ -49,6 +49,8 @@ bool HashTable<K, V>::get(const K & key, V & value)
 template <typename K, typename V>
 bool HashTable<K, V>::put(const K & key, const V & value)
 {
+	///////////////////////////////
+	std::cout << "Hash Put: " << key << std::endl;
 	//retrives the hashValue(slot in the matrix)
 	unsigned long hashValue = hash(key);
 	HashNode<K, V>* prev = NULL;

@@ -14,7 +14,9 @@
 
 
 HashTable<std::string, Customer*> customerHashTable(100);
-HashTable<std::string, Movie*> movieHashTable(100);
+HashTable<std::string, MovieClassic*> movieClassicHashTable(100);
+HashTable<std::string, MovieDrama*> movieDramaHashTable(100);
+HashTable<std::string, MovieComedy*> movieComedyHashTable(100);
 LinkedList<MovieComedy> movieComedyLinkedList;
 LinkedList<MovieDrama> movieDramaLinkedList;
 LinkedList<MovieClassic> movieClassicLinkedList;
@@ -70,12 +72,12 @@ void processMovies(int type, std::string line)
 		movieComedy->setYearReleased(stoi(wordVector[wordCount-1]));
 		//Set key to be used for hashTable
 		key = movieComedy->getTitle();
-		key += key + " " + std::to_string(movieComedy->getYearReleased());
+		key += " " + std::to_string(movieComedy->getYearReleased());
 
 		//Checks if Movie already exists through the hash table "put" function
 		//If movie already exists, does not place a duplicate into the linked list
 		if (movieComedyLinkedList.add(movieComedy)) {
-			movieHashTable.put(key, movieComedy);
+			movieComedyHashTable.put(key, movieComedy);
 			//Reporting tool
 			//std::cout << "Successfully added Movie" << std::endl;
 		}
@@ -106,14 +108,12 @@ void processMovies(int type, std::string line)
 
 		//Set key to be used for hashTable
 		key = movieDrama->getDirector();
-		key += key + " " + movieDrama->getTitle();
+		key += " " + movieDrama->getTitle();
 
 		//Checks if Movie already exists through the hash table "put" function
 		//If movie already exists, does not place a duplicate into the linked list
 		if (movieDramaLinkedList.add(movieDrama)) {
-			movieHashTable.put(key, movieDrama);
-			//Reporting tool
-			//std::cout << "Successfully added Movie" << std::endl;
+			movieDramaHashTable.put(key, movieDrama);
 		}
 		else
 			std::cout << "Movie object already exist in database. Replacing with new object" << std::endl;
@@ -154,15 +154,12 @@ void processMovies(int type, std::string line)
 		key += wordVector[wordCount - 1] + " ";
 		key += wordVector[wordCount - 4] + " ";
 		key += wordVector[wordCount - 3];
-		
 
 		//Checks if Movie already exists through the hash table "put" function
 		//If movie already exists, does not place a duplicate into the linked list
-		if (movieHashTable.put(key, movieClassic))
+		if (movieClassicHashTable.put(key, movieClassic))
 		{
 			movieClassicLinkedList.add(movieClassic);
-			//Reporting tool
-			//std::cout << "Successfully added Movie" << std::endl;
 		}
 		else
 			std::cout << "Movie object already exist in database. Replacing with new object" << std::endl;
@@ -239,8 +236,6 @@ void readCustomerFile(std::string filename) {
 			if (customerHashTable.put(key, cust))
 			{
 				customerLinkedList.add(cust);
-				//Reporting tool
-				//std::cout << "Successfully added Customer" << std::endl;
 			}
 			else
 				std::cout << "Customer object already exists in database. Replacing with new Object" << std::endl;
@@ -255,7 +250,7 @@ void readCommandFile(std::string filename)
 	std::ifstream inFile;
 	std::string line;
 	std::string type;
-	std::string key;
+	
 	inFile.open(filename);
 
 	if (!inFile) {
@@ -267,6 +262,7 @@ void readCommandFile(std::string filename)
 		{
 			std::vector<std::string> wordVector;
 			std::istringstream iss(line);
+			std::string key;
 			do {
 				std::string subs;
 				iss >> subs;
@@ -301,12 +297,16 @@ void readCommandFile(std::string filename)
 						key += " ";
 						key += wordVector[i];
 					}
-					Movie* tempMovie;
-					/////////////////////////////////////////////////////
-					std::cout << "Key: " << key << std::endl;
+					MovieDrama* tempMovie;
 
-					movieHashTable.get(key, tempMovie);
-					customerHashTable.get(wordVector[1], tempCust);
+					if (!customerHashTable.get(wordVector[1], tempCust)) {
+						std::cerr << "Customer not found Line 303" << std::endl;
+						continue;
+					}
+					if (!movieDramaHashTable.get(key, tempMovie)) {
+						std::cerr << "Movie not found Line 307" << std::endl;
+						continue;
+					}
 					if (!tempMovie->setStock(tempMovie->getStock() - 1))
 					{
 						std::cerr << "Customer ID: " << wordVector[1] << ". Unable to borrow movie: " << tempMovie->getTitle() <<" - Out of stock." << std::endl;
@@ -323,13 +323,16 @@ void readCommandFile(std::string filename)
 					key += wordVector[5] + " ";
 					key += wordVector[6] + " ";
 					key += wordVector[7];
-					Movie* tempMovie;
-					movieHashTable.get(key, tempMovie);
+					MovieClassic* tempMovie;
 					Customer* tempCust;
-					customerHashTable.get(wordVector[1], tempCust);
-					///////////////////////////////////////////////
-					std::cout << "Key: " << key << std::endl;
-					/////////////////////////////////////////////
+					if (!customerHashTable.get(wordVector[1], tempCust)) {
+						std::cerr << "Customer not found Line 329" << std::endl;
+						continue;
+					}
+					if (!movieClassicHashTable.get(key, tempMovie)) {
+						std::cerr << "Movie not found Line 333" << std::endl;
+						continue;
+					}
 					if (!tempMovie->setStock(tempMovie->getStock() - 1))
 					{
 						std::cerr << "Customer ID: " << wordVector[1] << ". Unable to borrow movie: " << tempMovie->getTitle() << " - Out of stock." << std::endl;
@@ -342,18 +345,22 @@ void readCommandFile(std::string filename)
 					}
 				}
 				else if (movieType == "F") {
-					for (int i = 4; i < wordVector.size(); i++)
+					key = wordVector[4];
+					for (int i = 5; i < wordVector.size(); i++)
 					{
 						key += " ";
 						key += wordVector[i];
 					}
 					Customer* tempCust;
-					Movie* tempMovie;
-					///////////////////////////
-					std::cout << "Key: " << key << std::endl;
-					/////////////////////////////
-					customerHashTable.get(wordVector[1], tempCust);
-					movieHashTable.get(key, tempMovie);
+					MovieComedy* tempMovie;
+					if (!customerHashTable.get(wordVector[1], tempCust)) {
+						std::cerr << "Customer not found Line 357" << std::endl;
+						continue;
+					}
+					if (!movieComedyHashTable.get(key, tempMovie)) {
+						std::cerr << "Movie not found Line 361" << std::endl;
+						continue;
+					}
 					if (!tempMovie->setStock(tempMovie->getStock() - 1))
 					{
 						std::cerr << "Customer ID: " << wordVector[1] << ". Unable to borrow movie: " << tempMovie->getTitle() << " - Out of stock." << std::endl;
@@ -383,12 +390,15 @@ void readCommandFile(std::string filename)
 						key += " ";
 						key += wordVector[i];
 					}
-					Movie* tempMovie;
-					////////////////////////////////////////
-					std::cout << "Key: " << key << std::endl;
-					//////////////////////////////////////////
-					movieHashTable.get(key, tempMovie);
-					customerHashTable.get(wordVector[1], tempCust);
+					MovieDrama* tempMovie;
+					if (!customerHashTable.get(wordVector[1], tempCust)) {
+						std::cerr << "Customer not found Line 395" << std::endl;
+						continue;
+					}
+					if (!movieDramaHashTable.get(key, tempMovie)) {
+						std::cerr << "Movie not found Line 399" << std::endl;
+						continue;
+					}
 					tempMovie->setStock(tempMovie->getStock() + 1);
 					tempCust->addToHistory(type, tempMovie);
 						//unneeded confirmation report
@@ -400,13 +410,16 @@ void readCommandFile(std::string filename)
 					key += wordVector[5] + " ";
 					key += wordVector[6] + " ";
 					key += wordVector[7];
-					///////////////////////////////////////
-					std::cout << "Key: " << key << std::endl;
-					/////////////////////////////////////////
-					Movie* tempMovie;
-					movieHashTable.get(key, tempMovie);
+					MovieClassic* tempMovie;
 					Customer* tempCust;
-					customerHashTable.get(wordVector[1], tempCust);
+					if (!customerHashTable.get(wordVector[1], tempCust)) {
+						std::cerr << "Customer not found Line 416" << std::endl;
+						continue;
+					}
+					if (!movieClassicHashTable.get(key, tempMovie)) {
+						std::cerr << "Movie not found Line 416" << std::endl;
+						continue;
+					}
 					tempMovie->setStock(tempMovie->getStock() + 1);
 					tempCust->addToHistory(type, tempMovie);
 						//unneeded confirmation report
@@ -414,18 +427,22 @@ void readCommandFile(std::string filename)
 					
 				}
 				else if (movieType == "F") {
+					key = "";
 					for (int i = 4; i < wordVector.size(); i++)
 					{
 						key += " ";
 						key += wordVector[i];
 					}
-					////////////////////////////
-					std::cout << "Key: " << key << std::endl;
-					/////////////////////////////////////
 					Customer* tempCust;
-					Movie* tempMovie;
-					customerHashTable.get(wordVector[1], tempCust);
-					movieHashTable.get(key, tempMovie);
+					MovieComedy* tempMovie;
+					if (!customerHashTable.get(wordVector[1], tempCust)) {
+						std::cerr << "Customer not found Line 439" << std::endl;
+						continue;
+					}
+					if (!movieComedyHashTable.get(key, tempMovie)) {
+						std::cerr << "Movie not found Line 443" << std::endl;
+						continue;
+					}
 					tempMovie->setStock(tempMovie->getStock() + 1);
 					tempCust->addToHistory(type, tempMovie);
 						//unneeded confirmation report
