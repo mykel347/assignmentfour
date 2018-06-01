@@ -9,7 +9,7 @@ public:
 	Movie();
 	~Movie();
 
-	void setStock(int s);
+	bool setStock(int s);
 	int getStock() const;
 
 	void setDirector(std::string dir);

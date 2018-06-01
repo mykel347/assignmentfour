@@ -15,7 +15,15 @@ Movie::~Movie()
 {
 }
 
-void Movie::setStock(int s) { stock = s; }
+bool Movie::setStock(int s) { 
+	if (s < 0)
+	{
+		return false;
+	}
+	else
+	stock = s; 
+	return true;
+}
 
 int Movie::getStock() const { return stock; }
 
@@ -39,6 +47,7 @@ bool Movie::lessThan(Movie* Rhs) const
 
 void Movie::print()
 {
+	std::cout << "Wrond Movie Print method called" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////

@@ -250,6 +250,202 @@ void readCustomerFile(std::string filename) {
 	inFile.close();
 }
 
+void readCommandFile(std::string filename)
+{
+	std::ifstream inFile;
+	std::string line;
+	std::string type;
+	std::string key;
+	inFile.open(filename);
+
+	if (!inFile) {
+		std::cerr << "unable to open file data4commands";
+	}
+	else
+	{
+		while (std::getline(inFile, line))
+		{
+			std::vector<std::string> wordVector;
+			std::istringstream iss(line);
+			do {
+				std::string subs;
+				iss >> subs;
+				wordVector.push_back(subs);
+			} while (iss);
+			type = wordVector[0];
+			if (type == "I") {
+				//print inventory
+				std::cout << "Printing Movie Inventory" << std::endl;
+				/*std::cout << "Classical Movies" << std::endl;
+				movieClassicLinkedList.printFromNode();
+				std::cout << "Dramatic Movies" << std::endl;
+				movieDramaLinkedList.printFromNode();
+				std::cout << "Comedic Movies" << std::endl;
+				movieComedyLinkedList.printFromNode();*/
+			}
+			else if (type == "H") {
+				//Print customer history 
+				Customer* tempCust;
+				customerHashTable.get(wordVector[1], tempCust);
+				tempCust->printHistory();                                               //Work on this formating if it looks wierd
+			}
+			else if (type == "B") {
+				
+				std::string movieType = wordVector[3];
+				
+				if (movieType == "D") {
+					Customer* tempCust;
+					key = wordVector[4] + " ";
+					key += wordVector[5];
+					for (int i = 6; i < wordVector.size(); i++) {
+						key += " ";
+						key += wordVector[i];
+					}
+					Movie* tempMovie;
+					/////////////////////////////////////////////////////
+					std::cout << "Key: " << key << std::endl;
+
+					movieHashTable.get(key, tempMovie);
+					customerHashTable.get(wordVector[1], tempCust);
+					if (!tempMovie->setStock(tempMovie->getStock() - 1))
+					{
+						std::cerr << "Customer ID: " << wordVector[1] << ". Unable to borrow movie: " << tempMovie->getTitle() <<" - Out of stock." << std::endl;
+					}
+					else
+					{
+						tempCust->addToHistory(type, tempMovie);
+						//unneeded confirmation report
+						std::cout << "Borrow transaction succussful." << std::endl;
+					}
+				}
+				else if (movieType == "C") {
+					key = wordVector[4] + " ";
+					key += wordVector[5] + " ";
+					key += wordVector[6] + " ";
+					key += wordVector[7];
+					Movie* tempMovie;
+					movieHashTable.get(key, tempMovie);
+					Customer* tempCust;
+					customerHashTable.get(wordVector[1], tempCust);
+					///////////////////////////////////////////////
+					std::cout << "Key: " << key << std::endl;
+					/////////////////////////////////////////////
+					if (!tempMovie->setStock(tempMovie->getStock() - 1))
+					{
+						std::cerr << "Customer ID: " << wordVector[1] << ". Unable to borrow movie: " << tempMovie->getTitle() << " - Out of stock." << std::endl;
+					}
+					else
+					{
+						tempCust->addToHistory(type, tempMovie);
+						//unneeded confirmation report
+						std::cout << "Borrow transaction successful." << std::endl;
+					}
+				}
+				else if (movieType == "F") {
+					for (int i = 4; i < wordVector.size(); i++)
+					{
+						key += " ";
+						key += wordVector[i];
+					}
+					Customer* tempCust;
+					Movie* tempMovie;
+					///////////////////////////
+					std::cout << "Key: " << key << std::endl;
+					/////////////////////////////
+					customerHashTable.get(wordVector[1], tempCust);
+					movieHashTable.get(key, tempMovie);
+					if (!tempMovie->setStock(tempMovie->getStock() - 1))
+					{
+						std::cerr << "Customer ID: " << wordVector[1] << ". Unable to borrow movie: " << tempMovie->getTitle() << " - Out of stock." << std::endl;
+					}
+					else
+					{
+						tempCust->addToHistory(type, tempMovie);
+						//unneeded confirmation report
+						std::cout << "Borrow transaction successful." << std::endl;
+					}
+
+
+				}
+				else
+					std::cout << "Invalid movie genre used" << std::endl;
+		
+			}
+			else if (type == "R") {
+				//Return setup
+				std::string movieType = wordVector[3];
+
+				if (movieType == "D") {
+					Customer* tempCust;
+					key = wordVector[4] + " ";
+					key += wordVector[5];
+					for (int i = 6; i < wordVector.size(); i++) {
+						key += " ";
+						key += wordVector[i];
+					}
+					Movie* tempMovie;
+					////////////////////////////////////////
+					std::cout << "Key: " << key << std::endl;
+					//////////////////////////////////////////
+					movieHashTable.get(key, tempMovie);
+					customerHashTable.get(wordVector[1], tempCust);
+					tempMovie->setStock(tempMovie->getStock() + 1);
+					tempCust->addToHistory(type, tempMovie);
+						//unneeded confirmation report
+					std::cout << "Return transaction succussful." << std::endl;
+					
+				}
+				else if (movieType == "C") {
+					key = wordVector[4] + " ";
+					key += wordVector[5] + " ";
+					key += wordVector[6] + " ";
+					key += wordVector[7];
+					///////////////////////////////////////
+					std::cout << "Key: " << key << std::endl;
+					/////////////////////////////////////////
+					Movie* tempMovie;
+					movieHashTable.get(key, tempMovie);
+					Customer* tempCust;
+					customerHashTable.get(wordVector[1], tempCust);
+					tempMovie->setStock(tempMovie->getStock() + 1);
+					tempCust->addToHistory(type, tempMovie);
+						//unneeded confirmation report
+					std::cout << "Borrow transaction successful." << std::endl;
+					
+				}
+				else if (movieType == "F") {
+					for (int i = 4; i < wordVector.size(); i++)
+					{
+						key += " ";
+						key += wordVector[i];
+					}
+					////////////////////////////
+					std::cout << "Key: " << key << std::endl;
+					/////////////////////////////////////
+					Customer* tempCust;
+					Movie* tempMovie;
+					customerHashTable.get(wordVector[1], tempCust);
+					movieHashTable.get(key, tempMovie);
+					tempMovie->setStock(tempMovie->getStock() + 1);
+					tempCust->addToHistory(type, tempMovie);
+						//unneeded confirmation report
+					std::cout << "Borrow transaction successful." << std::endl;
+					
+
+
+				}
+				else
+					std::cout << "Invalid movie genre used" << std::endl;
+
+			}
+			else
+				std::cerr << "Invalid command indicator used." << std::endl;
+			
+		}
+	}
+	inFile.close();
+}
+
 void readFromFile() {
 
 	readMovieFile("data4movies.txt");
@@ -265,73 +461,8 @@ void writeToFile() {
 
 int main()
 {
-	/*Movie* movie1Generic = new Movie();
-	MovieComedy* movie2Comedy = new MovieComedy();
-	MovieDrama* movie3Drama = new MovieDrama();
-
-	MovieClassic* movie1Classic = new MovieClassic();
-	MovieClassic* movie2Classic = new MovieClassic();
-	MovieClassic* movie3Classic = new MovieClassic();
-	MovieClassic* movie4Classic = new MovieClassic();
-
-	LinkedList<MovieClassic>* MovieList = new LinkedList<MovieClassic>();
-
-	movie1Classic->setDirector("Director Cheney");
-	movie1Classic->setStock(10);
-	movie1Classic->setTitle("This is america");
-	movie1Classic->setMajorActorFirst("Childish");
-	movie1Classic->setMajorActorLast("Gambino");
-	movie1Classic->setYearReleased(2018);
-	movie1Classic->setMonthReleased(2);
-
-	movie2Classic->setDirector("Director Cheney");
-	movie2Classic->setStock(10);
-	movie2Classic->setTitle("This is america");
-	movie2Classic->setMajorActorLast("Childish");
-	movie2Classic->setMajorActorFirst("Gambino");
-	movie2Classic->setYearReleased(2017);
-	movie2Classic->setMonthReleased(7);
-
-	movie3Classic->setDirector("Director Cheney");
-	movie3Classic->setStock(10);
-	movie3Classic->setTitle("This is america");
-	movie3Classic->setMajorActorFirst("Jane");
-	movie3Classic->setMajorActorLast("Savage");
-	movie3Classic->setYearReleased(2019);
-	movie3Classic->setMonthReleased(2);
-
-	movie4Classic->setDirector("Director Cheney");
-	movie4Classic->setStock(10);
-	movie4Classic->setTitle("This is america");
-	movie4Classic->setMajorActorFirst("zoo");
-	movie4Classic->setMajorActorLast("philia");
-	movie4Classic->setYearReleased(2018);
-	movie4Classic->setMonthReleased(6);
-
-	if (MovieList->add(movie1Classic)) {
-		std::cout << "Item 1 Added" << std::endl;
-	}
-	if (MovieList->add(movie2Classic)) {
-		std::cout << "Item 2 Added" << std::endl;
-	}
-	if (MovieList->add(movie3Classic)) {
-		std::cout << "Item 3 Added" << std::endl;
-	}
-	if (MovieList->add(movie4Classic)) {
-		std::cout << "Item 4 Added" << std::endl;
-	}
-
-	MovieList->printFromNode();
-
-	LinkedList<Customer>* CustomerList = new LinkedList<Customer>();
-	Customer dave;*/
-
-	/*HashTable<std::string, Customer*>* customerHashTable = new HashTable<std::string, Customer*>(100);
-	HashTable<std::string, Movie*>* movieHashTable = new HashTable<std::string, Movie*>(100);
-	LinkedList<Movie> movieLinkedList;
-	LinkedList<Customer> customerLinkedList;*/
-
 	readFromFile();
+	readCommandFile("data4commands.txt");
 	
 
 	//switch menu

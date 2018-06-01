@@ -75,6 +75,6 @@ bool Customer::addToHistory(std::string type, Movie * movie)
 //Prints history for the transaction processed
 void Customer::printHistory()
 {
-	std::cout << "Displaying Transcation History For" << firstName << " " << lastName << "  ID: "<< ID << std::endl << std::endl;
+	std::cout << "Displaying Transcation History For " << firstName << " " << lastName << "  ID: "<< ID << std::endl << std::endl;
 	historyLinkedList.printFromNode();
 }

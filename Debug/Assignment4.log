@@ -1,20 +1,20 @@
-﻿  TransactionHistory.cpp
-  Movie.cpp
-  Customer.cpp
-  Assignment4.cpp
-c:\users\mykel\source\repos\assignment4\assignment4\hashtable.cpp(88): warning C4018: '<': signed/unsigned mismatch
-  c:\users\mykel\source\repos\assignment4\assignment4\hashtable.cpp(86): note: while compiling class template member function 'int HashTable<std::string,Customer *>::hash(const K &)'
+﻿  Assignment4.cpp
+c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(300): warning C4018: '<': signed/unsigned mismatch
+c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(345): warning C4018: '<': signed/unsigned mismatch
+c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(382): warning C4018: '<': signed/unsigned mismatch
+c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(417): warning C4018: '<': signed/unsigned mismatch
+c:\users\lisa\documents\github\assignmentfour\hashtable.cpp(88): warning C4018: '<': signed/unsigned mismatch
+  c:\users\lisa\documents\github\assignmentfour\hashtable.cpp(86): note: while compiling class template member function 'int HashTable<std::string,Customer *>::hash(const K &)'
           with
           [
               K=std::string
           ]
-  c:\users\mykel\source\repos\assignment4\assignment4\hashtable.cpp(53): note: see reference to function template instantiation 'int HashTable<std::string,Customer *>::hash(const K &)' being compiled
+  c:\users\lisa\documents\github\assignmentfour\hashtable.cpp(35): note: see reference to function template instantiation 'int HashTable<std::string,Customer *>::hash(const K &)' being compiled
           with
           [
               K=std::string
           ]
-  c:\users\mykel\source\repos\assignment4\assignment4\hashtable.cpp(7): note: while compiling class template member function 'HashTable<std::string,Customer *>::HashTable(int)'
-  c:\users\mykel\source\repos\assignment4\assignment4\assignment4.cpp(16): note: see reference to function template instantiation 'HashTable<std::string,Customer *>::HashTable(int)' being compiled
-  c:\users\mykel\source\repos\assignment4\assignment4\assignment4.cpp(16): note: see reference to class template instantiation 'HashTable<std::string,Customer *>' being compiled
-  Generating Code...
-  Assignment4.vcxproj -> C:\Users\mykel\source\repos\Assignment4\Debug\Assignment4.exe
+  c:\users\lisa\documents\github\assignmentfour\hashtable.cpp(7): note: while compiling class template member function 'HashTable<std::string,Customer *>::HashTable(int)'
+  c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(16): note: see reference to function template instantiation 'HashTable<std::string,Customer *>::HashTable(int)' being compiled
+  c:\users\lisa\documents\github\assignmentfour\assignment4.cpp(16): note: see reference to class template instantiation 'HashTable<std::string,Customer *>' being compiled
+  Assignment4.vcxproj -> C:\Users\Lisa\Documents\GitHub\assignmentfour\Debug\Assignment4.exe
