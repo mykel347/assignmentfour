@@ -27,7 +27,8 @@ public:
 	std::string getKey() { return key; }
 
 	//Helper methods for the customer class
-	bool addToHistory(std::string type, Movie* movie);
+	void print();
+	bool addToHistory(std::string type, std::string);
 	void printHistory();
 	bool lessThan(Customer* c);
 

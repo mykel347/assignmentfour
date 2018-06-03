@@ -3,7 +3,7 @@
 
 
 
-TransactionHistory::TransactionHistory(std::string type, Movie* movie)
+TransactionHistory::TransactionHistory(std::string type, std::string key)
 {
 	if (type == "B")
 		transType = "Borrowed";
@@ -11,7 +11,7 @@ TransactionHistory::TransactionHistory(std::string type, Movie* movie)
 		transType = "Returned";
 	else
 		transType = "Invalid Type";
-	moviePtr = movie;
+	movieKey = key;
 }
 
 
@@ -21,6 +21,6 @@ TransactionHistory::~TransactionHistory()
 
 void TransactionHistory::print()
 {
-	std::cout << transType;
-	moviePtr->print();
+	std::cout << "Action Type: " << transType;
+	std::cout << "\t Movie Key: " << movieKey << std::endl;
 }

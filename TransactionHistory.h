@@ -7,7 +7,7 @@
 class TransactionHistory
 {
 public:
-	TransactionHistory(std::string type, Movie* movie);
+	TransactionHistory(std::string type, std::string key);
 	~TransactionHistory();
 
 	//This list will not sort itself. The list generates linearly
@@ -20,6 +20,6 @@ public:
 private:
 	std::string date;   //to be implemented when you figure out how to timestamp
 	std::string transType;
-	Movie* moviePtr; //May change the way to keep movie data, using the ptr to call the print method within movie
+	std::string movieKey; //May change the way to keep movie data, using the ptr to call the print method within movie
 };
 

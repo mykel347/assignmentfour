@@ -1,5 +1,6 @@
-// Assignment4.cpp : Defines the entry point for the console application.
-//
+// Assignment 4 - Movie rental database
+// Version 1.0 - 6/2/2018
+// Jacob Lefeat + Mykel Boachie
 
 #include <iostream>
 #include <queue>
@@ -10,9 +11,8 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
-//#include <cstddef>
 
-
+//All linked lists and hash tables to be used in the program
 HashTable<std::string, Customer*> customerHashTable(100);
 HashTable<std::string, MovieClassic*> movieClassicHashTable(100);
 HashTable<std::string, MovieDrama*> movieDramaHashTable(100);
@@ -22,6 +22,7 @@ LinkedList<MovieDrama> movieDramaLinkedList;
 LinkedList<MovieClassic> movieClassicLinkedList;
 LinkedList<Customer> customerLinkedList;
 
+//Dirty method to count words in a string
 int countWords(std::string s) {
 	int wordCount = 0;
 	std::stringstream ss(s);
@@ -30,6 +31,7 @@ int countWords(std::string s) {
 	return wordCount;
 }
 
+//Recieves a string from "readMovieFile" method and executes accordingly
 void processMovies(int type, std::string line)
 {
 	MovieComedy* movieComedy;
@@ -76,8 +78,8 @@ void processMovies(int type, std::string line)
 
 		//Checks if Movie already exists through the hash table "put" function
 		//If movie already exists, does not place a duplicate into the linked list
-		if (movieComedyLinkedList.add(movieComedy)) {
-			movieComedyHashTable.put(key, movieComedy);
+		if (movieComedyHashTable.put(key, movieComedy)) {
+			movieComedyLinkedList.add(movieComedy);
 			//Reporting tool
 			//std::cout << "Successfully added Movie" << std::endl;
 		}
@@ -112,8 +114,8 @@ void processMovies(int type, std::string line)
 
 		//Checks if Movie already exists through the hash table "put" function
 		//If movie already exists, does not place a duplicate into the linked list
-		if (movieDramaLinkedList.add(movieDrama)) {
-			movieDramaHashTable.put(key, movieDrama);
+		if (movieDramaHashTable.put(key, movieDrama)) {
+			movieDramaLinkedList.add(movieDrama);
 		}
 		else
 			std::cout << "Movie object already exist in database. Replacing with new object" << std::endl;
@@ -169,6 +171,7 @@ void processMovies(int type, std::string line)
 	}
 }
 
+//Reads the movie file and sends the lines to the "processMovies" method
 void readMovieFile(std::string filename) {
 	std::ifstream inFile(filename);
 	std::string line;
@@ -201,6 +204,7 @@ void readMovieFile(std::string filename) {
 	inFile.close();
 }
 
+//Reads and procesess the customer file
 void readCustomerFile(std::string filename) {
 	std::ifstream inFile;
 	std::string line;
@@ -245,6 +249,7 @@ void readCustomerFile(std::string filename) {
 	inFile.close();
 }
 
+//Reads and processes the command file
 void readCommandFile(std::string filename)
 {
 	std::ifstream inFile;
@@ -269,15 +274,19 @@ void readCommandFile(std::string filename)
 				wordVector.push_back(subs);
 			} while (iss);
 			type = wordVector[0];
+			
+
 			if (type == "I") {
 				//print inventory
 				std::cout << "Printing Movie Inventory" << std::endl;
-				/*std::cout << "Classical Movies" << std::endl;
-				movieClassicLinkedList.printFromNode();
+				std::cout << "Comedic Movies" << std::endl;
+				movieComedyLinkedList.printFromNode();
 				std::cout << "Dramatic Movies" << std::endl;
 				movieDramaLinkedList.printFromNode();
-				std::cout << "Comedic Movies" << std::endl;
-				movieComedyLinkedList.printFromNode();*/
+				std::cout << "Classical Movies" << std::endl;
+				movieClassicLinkedList.printFromNode();
+				
+				
 			}
 			else if (type == "H") {
 				//Print customer history 
@@ -285,26 +294,32 @@ void readCommandFile(std::string filename)
 				customerHashTable.get(wordVector[1], tempCust);
 				tempCust->printHistory();                                               //Work on this formating if it looks wierd
 			}
+			//Handles All "Borrow" transactions
 			else if (type == "B") {
+				if (wordVector[2] != "D")
+				{
+					std::cerr << "Invalid Format - Only DvD's currently acceptable." << std::endl;
+					continue;
+				}
 				
 				std::string movieType = wordVector[3];
-				
+				//Movie "drama" format
 				if (movieType == "D") {
 					Customer* tempCust;
 					key = wordVector[4] + " ";
 					key += wordVector[5];
-					for (int i = 6; i < wordVector.size(); i++) {
+					for (int i = 6; i < wordVector.size()-1; i++) {
 						key += " ";
 						key += wordVector[i];
 					}
 					MovieDrama* tempMovie;
 
 					if (!customerHashTable.get(wordVector[1], tempCust)) {
-						std::cerr << "Customer not found Line 303" << std::endl;
+						std::cerr << "Customer not found" << std::endl;
 						continue;
 					}
 					if (!movieDramaHashTable.get(key, tempMovie)) {
-						std::cerr << "Movie not found Line 307" << std::endl;
+						std::cerr << "Movie not found" << std::endl;
 						continue;
 					}
 					if (!tempMovie->setStock(tempMovie->getStock() - 1))
@@ -313,11 +328,10 @@ void readCommandFile(std::string filename)
 					}
 					else
 					{
-						tempCust->addToHistory(type, tempMovie);
-						//unneeded confirmation report
-						std::cout << "Borrow transaction succussful." << std::endl;
+						tempCust->addToHistory(type, key);
 					}
 				}
+				//Movie "classic" format
 				else if (movieType == "C") {
 					key = wordVector[4] + " ";
 					key += wordVector[5] + " ";
@@ -326,11 +340,11 @@ void readCommandFile(std::string filename)
 					MovieClassic* tempMovie;
 					Customer* tempCust;
 					if (!customerHashTable.get(wordVector[1], tempCust)) {
-						std::cerr << "Customer not found Line 329" << std::endl;
+						std::cerr << "Customer not found" << std::endl;
 						continue;
 					}
 					if (!movieClassicHashTable.get(key, tempMovie)) {
-						std::cerr << "Movie not found Line 333" << std::endl;
+						std::cerr << "Movie not found" << std::endl;
 						continue;
 					}
 					if (!tempMovie->setStock(tempMovie->getStock() - 1))
@@ -339,14 +353,13 @@ void readCommandFile(std::string filename)
 					}
 					else
 					{
-						tempCust->addToHistory(type, tempMovie);
-						//unneeded confirmation report
-						std::cout << "Borrow transaction successful." << std::endl;
+						tempCust->addToHistory(type, key);
 					}
 				}
+				//Movie Comedy format
 				else if (movieType == "F") {
 					key = wordVector[4];
-					for (int i = 5; i < wordVector.size(); i++)
+					for (int i = 5; i < wordVector.size()-1; i++)
 					{
 						key += " ";
 						key += wordVector[i];
@@ -354,11 +367,11 @@ void readCommandFile(std::string filename)
 					Customer* tempCust;
 					MovieComedy* tempMovie;
 					if (!customerHashTable.get(wordVector[1], tempCust)) {
-						std::cerr << "Customer not found Line 357" << std::endl;
+						std::cerr << "Customer not found" << std::endl;
 						continue;
 					}
 					if (!movieComedyHashTable.get(key, tempMovie)) {
-						std::cerr << "Movie not found Line 361" << std::endl;
+						std::cerr << "Movie not found" << std::endl;
 						continue;
 					}
 					if (!tempMovie->setStock(tempMovie->getStock() - 1))
@@ -367,9 +380,7 @@ void readCommandFile(std::string filename)
 					}
 					else
 					{
-						tempCust->addToHistory(type, tempMovie);
-						//unneeded confirmation report
-						std::cout << "Borrow transaction successful." << std::endl;
+						tempCust->addToHistory(type, key);
 					}
 
 
@@ -378,33 +389,37 @@ void readCommandFile(std::string filename)
 					std::cout << "Invalid movie genre used" << std::endl;
 		
 			}
+			//Handles all "return" entries
 			else if (type == "R") {
-				//Return setup
+				if (wordVector[2] != "D")
+				{
+					std::cerr << "Invalid Format - Only DvD's currently acceptable." << std::endl;
+					continue;
+				}
 				std::string movieType = wordVector[3];
-
+				//Drama format
 				if (movieType == "D") {
 					Customer* tempCust;
 					key = wordVector[4] + " ";
 					key += wordVector[5];
-					for (int i = 6; i < wordVector.size(); i++) {
+					for (int i = 6; i < wordVector.size()-1; i++) {
 						key += " ";
 						key += wordVector[i];
 					}
 					MovieDrama* tempMovie;
 					if (!customerHashTable.get(wordVector[1], tempCust)) {
-						std::cerr << "Customer not found Line 395" << std::endl;
+						std::cerr << "Customer not found" << std::endl;
 						continue;
 					}
 					if (!movieDramaHashTable.get(key, tempMovie)) {
-						std::cerr << "Movie not found Line 399" << std::endl;
+						std::cerr << "Movie not found" << std::endl;
 						continue;
 					}
 					tempMovie->setStock(tempMovie->getStock() + 1);
-					tempCust->addToHistory(type, tempMovie);
-						//unneeded confirmation report
-					std::cout << "Return transaction succussful." << std::endl;
+					tempCust->addToHistory(type, key);
 					
 				}
+				//Classic format
 				else if (movieType == "C") {
 					key = wordVector[4] + " ";
 					key += wordVector[5] + " ";
@@ -413,22 +428,21 @@ void readCommandFile(std::string filename)
 					MovieClassic* tempMovie;
 					Customer* tempCust;
 					if (!customerHashTable.get(wordVector[1], tempCust)) {
-						std::cerr << "Customer not found Line 416" << std::endl;
+						std::cerr << "Customer not found" << std::endl;
 						continue;
 					}
 					if (!movieClassicHashTable.get(key, tempMovie)) {
-						std::cerr << "Movie not found Line 416" << std::endl;
+						std::cerr << "Movie not found" << std::endl;
 						continue;
 					}
 					tempMovie->setStock(tempMovie->getStock() + 1);
-					tempCust->addToHistory(type, tempMovie);
-						//unneeded confirmation report
-					std::cout << "Borrow transaction successful." << std::endl;
+					tempCust->addToHistory(type, key);
 					
 				}
+				//Comedy format
 				else if (movieType == "F") {
 					key = "";
-					for (int i = 4; i < wordVector.size(); i++)
+					for (int i = 4; i < wordVector.size()-1; i++)
 					{
 						key += " ";
 						key += wordVector[i];
@@ -436,20 +450,15 @@ void readCommandFile(std::string filename)
 					Customer* tempCust;
 					MovieComedy* tempMovie;
 					if (!customerHashTable.get(wordVector[1], tempCust)) {
-						std::cerr << "Customer not found Line 439" << std::endl;
+						std::cerr << "Customer not found" << std::endl;
 						continue;
 					}
 					if (!movieComedyHashTable.get(key, tempMovie)) {
-						std::cerr << "Movie not found Line 443" << std::endl;
+						std::cerr << "Movie not found" << std::endl;
 						continue;
 					}
 					tempMovie->setStock(tempMovie->getStock() + 1);
-					tempCust->addToHistory(type, tempMovie);
-						//unneeded confirmation report
-					std::cout << "Borrow transaction successful." << std::endl;
-					
-
-
+					tempCust->addToHistory(type, key);
 				}
 				else
 					std::cout << "Invalid movie genre used" << std::endl;
@@ -463,32 +472,72 @@ void readCommandFile(std::string filename)
 	inFile.close();
 }
 
-void readFromFile() {
-
-	readMovieFile("data4movies.txt");
-	readCustomerFile("data4customers.txt");
-}
-
-//Not in requirement and can be skipped
-void writeToFile() {
-
-}
-
-
-
 int main()
 {
-	readFromFile();
-	readCommandFile("data4commands.txt");
-	
 
-	//switch menu
-	//possible options?
+	while (true)
+	{
+		std::string input;
+		int k;
+		std::cout << "Welcome to REDACTED movies. Please enter the number associated with your selection." << std::endl;
+		std::cout << "1. Read Movie File into database." << std::endl;
+		std::cout << "2. Read Customer File Into Database." << std::endl;
+		std::cout << "3. Read and Execute Command File." << std::endl;
+		std::cout << "4. Print Classic Movie Database" << std::endl;
+		std::cout << "5. Print Dramatic Movie Database" << std::endl;
+		std::cout << "6. Print Comedic Movie Database" << std::endl;
+		std::cout << "7. Print Customer Database" << std::endl;
+		std::cout << "8. Exit Program" << std::endl;
 
-	writeToFile();
+		std::cin >> input;
+		if (!isdigit(input[0]))
+		{
+			std::cout << "Bad input, please use valid numbers." << std::endl;
+			continue;
+		}
+		else
+			k = stoi(input);
 
-
-	system("PAUSE");
+		switch (k)
+		{
+		case 1:
+			readMovieFile("data4movies.txt");
+			std::cout << std::endl << "Reading From Movie File Completed" << std::endl << std::endl;
+			break;
+		case 2:
+			readCustomerFile("data4customers.txt");
+			std::cout << std::endl << "Reading From Customer File Completed" << std::endl << std::endl;
+			break;
+		case 3:
+			readCommandFile("data4commands.txt");
+			std::cout << std::endl << "Executing Command File Completed" << std::endl << std::endl;
+			break;
+		case 4:
+			std::cout << std::endl;
+			movieClassicLinkedList.printFromNode();
+			std::cout << std::endl;
+			break;
+		case 5:
+			std::cout << std::endl;
+			movieDramaLinkedList.printFromNode();
+			std::cout << std::endl;
+			break;
+		case 6:
+			std::cout << std::endl;
+			movieComedyLinkedList.printFromNode();
+			std::cout << std::endl;
+			break;
+		case 7:
+			std::cout << std::endl;
+			customerLinkedList.printFromNode();
+			std::cout << std::endl;
+			break;
+		case 8:
+			return 0;
+		default:
+			std::cout << "Bad input, please use valid numbers." << std::endl;
+		}
+	}
 	return 0;
 }
 

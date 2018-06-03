@@ -64,10 +64,15 @@ bool Customer::lessThan(Customer * c)
 	return false;
 }
 
-//Adds customer to transaction ID
-bool Customer::addToHistory(std::string type, Movie * movie)
+void Customer::print()
 {
-	TransactionHistory* newHistory = new TransactionHistory(type, movie);
+	std::cout << firstName << " " << lastName << " ID: " << ID << std::endl;
+}
+
+//Adds customer to transaction ID
+bool Customer::addToHistory(std::string type, std::string key)
+{
+	TransactionHistory* newHistory = new TransactionHistory(type, key);
 	historyLinkedList.add(newHistory);
 	return false;
 }
@@ -75,6 +80,13 @@ bool Customer::addToHistory(std::string type, Movie * movie)
 //Prints history for the transaction processed
 void Customer::printHistory()
 {
-	std::cout << "Displaying Transcation History For " << firstName << " " << lastName << "  ID: "<< ID << std::endl << std::endl;
+	std::cout << std::endl;
+	if (historyLinkedList.isEmpty())
+	{
+		std::cout << firstName << " " << lastName << " current had no transaction history" << std::endl;
+		return;
+	}
+	std::cout << "Displaying Transaction History For " << firstName << " " << lastName << "  ID: "<< ID << std::endl;
 	historyLinkedList.printFromNode();
+	std::cout << std::endl;
 }

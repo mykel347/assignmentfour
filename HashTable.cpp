@@ -31,6 +31,10 @@ HashTable<K, V>::~HashTable()
 template <typename K, typename V>
 bool HashTable<K, V>::get(const K & key, V & value)
 {
+	//////////////////////////////
+	//std::cout << "Hash Get: " << key << "|" << std::endl;
+		////////////////////////////
+
 	//retrieves the hashValue
 	unsigned long hashValue = hash(key);
 	HashNode<K, V>* entry = table[hashValue];
@@ -39,6 +43,7 @@ bool HashTable<K, V>::get(const K & key, V & value)
 	while (entry != NULL) {
 		if (entry->getKey() == key) {
 			value = entry->getValue();
+			
 			return true;
 		}
 		entry = entry->getNext();
@@ -50,7 +55,9 @@ template <typename K, typename V>
 bool HashTable<K, V>::put(const K & key, const V & value)
 {
 	///////////////////////////////
-	std::cout << "Hash Put: " << key << std::endl;
+	//std::cout << "Hash Put: " << key << "|" << std::endl;
+	/////////////////////////////////
+
 	//retrives the hashValue(slot in the matrix)
 	unsigned long hashValue = hash(key);
 	HashNode<K, V>* prev = NULL;
