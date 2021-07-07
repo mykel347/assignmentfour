@@ -2,6 +2,7 @@
 #include "LinkedList.h"
 //#include "LinkedList.h"
 
+//Default constructor
 template <typename T>
 LinkedList<T>::LinkedList()
 {
@@ -10,6 +11,8 @@ LinkedList<T>::LinkedList()
 template <typename T>
 LinkedList<T>::~LinkedList()
 {
+	//Clears the linked list
+	clear();
 }
 
 template<typename T>
@@ -48,9 +51,12 @@ bool LinkedList<T>::add(T * objectSent)
 	return true;
 }
 
+//Print from Node
 template<typename T>
-void LinkedList<T>::print() const {
+void LinkedList<T>::printFromNode() const {
 	Node* tempPtr = root;
+	if (tempPtr == NULL)
+		return;
 	while (tempPtr->next != nullptr) {
 		tempPtr->data->print();
 		tempPtr = tempPtr->next;
@@ -58,10 +64,18 @@ void LinkedList<T>::print() const {
 	tempPtr->data->print();
 }
 
+//Checks if the linkedlist isEmpty
 template<typename T>
 bool LinkedList<T>::isEmpty() const {
 	if (root == nullptr)
 		return true;
 	return false;
+}
+
+template<typename T>
+void LinkedList<T>::clear()
+{
+	//Defined in .h
+	clearHelper(root);
 }
 

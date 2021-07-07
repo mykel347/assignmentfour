@@ -116,14 +116,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Assignment4.cpp" />
+    <ClCompile Include="Customer.cpp" />
+    <ClCompile Include="HashTable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="LinkedList.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Movie.cpp" />
+    <ClCompile Include="TransactionHistory.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Customer.h" />
+    <ClInclude Include="HashTable.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="Movie.h" />
+    <ClInclude Include="TransactionHistory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

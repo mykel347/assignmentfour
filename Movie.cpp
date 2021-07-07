@@ -1,6 +1,8 @@
 #include "Movie.h"
 #include <iostream>
 
+using namespace std;
+
 //////////////////////////////////////////////////////////////////
 //Parent Movie Class
 //////////////////////////////////////////////////////////////////
@@ -13,7 +15,15 @@ Movie::~Movie()
 {
 }
 
-void Movie::setStock(int s) { stock = s; }
+bool Movie::setStock(int s) { 
+	if (s < 0)
+	{
+		return false;
+	}
+	else
+	stock = s; 
+	return true;
+}
 
 int Movie::getStock() const { return stock; }
 
@@ -29,8 +39,15 @@ void Movie::setYearReleased(int year) { yearReleased = year; }
 
 int Movie::getYearReleased() const { return yearReleased; }
 
+bool Movie::lessThan(Movie* Rhs) const
+{
+	std::cout << "Wrong LessThan method called" << std::endl;
+	return false;
+}
+
 void Movie::print()
 {
+	std::cout << "Wrong Movie Print method called" << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -47,11 +64,7 @@ MovieDrama::~MovieDrama()
 
 void MovieDrama::print()
 {
-	std::cout << "Title: \t" << getTitle() << std::endl;
-	std::cout << "Director: \t" << getDirector() << std::endl;
-	std::cout << "Genre: \t" << getMovieType() << std::endl;
-	std::cout << "Release Date: \t" << getYearReleased() << std::endl;
-	std::cout << "In Stock: \t" << getStock() << std::endl << std::endl;
+	std::cout << "Stock: " << getStock() << "\tTitle: " << getTitle() << " -- Director: " << getDirector() << std::endl;
 }
 
 std::string MovieDrama::getMovieType() const { return movieType; }
@@ -67,6 +80,7 @@ bool MovieDrama::lessThan(MovieDrama * Rhs) const
 		return true;
 	else if (getTitle() > Rhs->getTitle())
 		return false;
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -83,11 +97,7 @@ MovieComedy::~MovieComedy()
 
 void MovieComedy::print()
 {
-	std::cout << "Title: \t" << getTitle() << std::endl;
-	std::cout << "Director: \t" << getDirector() << std::endl;
-	std::cout << "Genre: \t" << getMovieType() << std::endl;
-	std::cout << "Release Date: \t" << getYearReleased() << std::endl;
-	std::cout << "In Stock: \t" << getStock() << std::endl << std::endl;
+	std::cout << "Stock: " << getStock() << "\tTitle: " << getTitle() << " -- Director: " << getDirector() << std::endl;
 }
 
 std::string MovieComedy::getMovieType() const { return movieType; }
@@ -105,6 +115,7 @@ bool MovieComedy::lessThan(MovieComedy * Rhs) const
 	}
 	else if (getYearReleased() > Rhs->getYearReleased())
 		return false;
+	return true;
 }
 
 ////////////////////////////////////////////////////////////////////
@@ -133,12 +144,8 @@ void MovieClassic::setMonthReleased(int m) { monthReleased = m; }
 
 void MovieClassic::print() const
 {
-	std::cout << "Title: \t" << getTitle() << std::endl;
-	std::cout << "Director: \t" << getDirector() << std::endl;
-	std::cout << "Genre: \t" << getMovieType() << std::endl;
-	std::cout << "Release Date: \t" << getMonthReleased() << " " << getYearReleased() << std::endl;
-	std::cout << "In Stock: \t" << getStock() << std::endl;
-	std::cout << "Main Actor: \t" << getMajorActorFirst() << " " << getMajorActorLast() << std::endl << std::endl;
+	std::cout << "Stock: " << getStock() << "\tTitle: " << getTitle() << " -- Director: " << getDirector();
+	std::cout << " -- Main Actor: " << getMajorActorFirst() << " " << getMajorActorLast() << std::endl;
 }
 
 std::string MovieClassic::getMovieType() const { return movieType; }
@@ -164,4 +171,5 @@ bool MovieClassic::lessThan(const MovieClassic * Rhs) const
 		return true;
 	else if (getMajorActorLast() > Rhs->getMajorActorLast())
 		return false;
+	return true;
 }
